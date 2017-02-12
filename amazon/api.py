@@ -1265,18 +1265,18 @@ class AmazonProduct(LXMLWrapper):
         :return:
             Status that product is eligible for prime or not.
         """
-        return self._safe_get_element_text('Offers.OfferListing.IsEligibleForPrime')
+        return self._safe_get_element_text('Offers.Offer.OfferListing.IsEligibleForPrime')
 
     @property
     def dimensions(self):
         """Item Dimensions.
 
         :return:
-            Product dimensions in format Length x Width x Height.
+            Product dimensions in format Length x Width x Height inches.
         """
-        length = self._safe_get_element_text('ItemAttributes.ItemDimensions.Length')
-        width = self._safe_get_element_text('ItemAttributes.ItemDimensions.Width')
-        height = self._safe_get_element_text('ItemAttributes.ItemDimensions.Height')
+        length = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Length'))/100
+        width = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Width'))/100
+        height = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Height'))/100
 
         return "{0} x {1} x {2}".format(length, width, height)
 
@@ -1285,10 +1285,10 @@ class AmazonProduct(LXMLWrapper):
         """Item weight.
 
         :return:
-            Product weight in text.
+            Product weight in pounds.
         """
-        weight = self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight')
-        return weight
+        weight = int(self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight'))/100
+        return str(weight)
 
 class AmazonCart(LXMLWrapper):
     """Wrapper around Amazon shopping cart.
