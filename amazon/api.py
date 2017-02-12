@@ -1258,6 +1258,37 @@ class AmazonProduct(LXMLWrapper):
             result.append(director.text)
         return result
 
+    @property
+    def is_prime(self):
+        """Amazon Prime.
+
+        :return:
+            Status that product is eligible for prime or not.
+        """
+        return self._safe_get_element_text('Offers.OfferListing.IsEligibleForPrime')
+
+    @property
+    def dimensions(self):
+        """Item Dimensions.
+
+        :return:
+            Product dimensions in format Length x Width x Height.
+        """
+        length = self._safe_get_element_text('ItemAttributes.ItemDimensions.Length')
+        width = self._safe_get_element_text('ItemAttributes.ItemDimensions.Width')
+        height = self._safe_get_element_text('ItemAttributes.ItemDimensions.Height')
+
+        return "{0} x {1} x {2}".format(length, width, height)
+
+    @property
+    def weight(self):
+        """Item weight.
+
+        :return:
+            Product weight in text.
+        """
+        weight = self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight')
+        return weight
 
 class AmazonCart(LXMLWrapper):
     """Wrapper around Amazon shopping cart.
