@@ -1287,7 +1287,7 @@ class AmazonProduct(LXMLWrapper):
         :return:
             Product weight in pounds.
         """
-        weight = int(self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight'))/100
+        weight = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight'))/100
         return str(weight)
 
 class AmazonCart(LXMLWrapper):
