@@ -1274,11 +1274,13 @@ class AmazonProduct(LXMLWrapper):
         :return:
             Product dimensions in format Length x Width x Height inches.
         """
-        length = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Length'))/100
-        width = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Width'))/100
-        height = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Height'))/100
-
-        return "{0} x {1} x {2}".format(length, width, height)
+        try:
+            length = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Length'))/100
+            width = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Width'))/100
+            height = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Height'))/100
+            return "{0} x {1} x {2}".format(length, width, height)
+        except TypeError:
+            return ''
 
     @property
     def weight(self):
@@ -1287,8 +1289,29 @@ class AmazonProduct(LXMLWrapper):
         :return:
             Product weight in pounds.
         """
-        weight = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight'))/100
-        return str(weight)
+        try:
+            weight = float(self._safe_get_element_text('ItemAttributes.ItemDimensions.Weight'))/100
+            return str(weight)
+        except TypeError:
+            return ''
+
+    @property
+    def category(self):
+        """Item category.
+
+        :return:
+            Item category in text.
+        """
+        return self._safe_get_element_text('BrowseNodes.BrowseNode.Name')
+
+    @property
+    def availability(self):
+        """Item availability.
+
+        :return:
+            Item availability status in text.
+        """
+        return self._safe_get_element_text('Offers.Offer.OfferListing.Availability')
 
 class AmazonCart(LXMLWrapper):
     """Wrapper around Amazon shopping cart.
